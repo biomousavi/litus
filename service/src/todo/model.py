@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class Todo(BaseModel):
+class TodoModel(BaseModel):
     """
     Container for a single todo record.
     """
