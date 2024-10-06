@@ -24,3 +24,15 @@ body {
     text-wrap: balance;
   }
 }
+
+.text-border-black {
+  -webkit-text-fill-color: var(--foreground);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--background);
+}
+
+@media (min-width: 768px) {
+  .text-shadow-black {
+    text-shadow: 0 4px 0 #141414;
+  }
+}
