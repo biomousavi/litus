@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from .todo import router as todo
 
 
-# TODO: add origins for deployment
+# TODO: add origins for production deployment
 origins = ["*"]
 
 app = FastAPI()
@@ -15,5 +16,4 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-app = FastAPI()
-
+app.include_router(todo.router)
