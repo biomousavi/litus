@@ -1,1 +1,14 @@
 node_modules
+
+.dockerignore
+
+# Log files
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.next
+.git
+dist
