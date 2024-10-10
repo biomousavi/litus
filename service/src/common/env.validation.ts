@@ -16,7 +16,6 @@ export class EnvironmentVariables {
   @IsNumber()
   SERVICE_PORT: number;
 
-
   @IsNotEmpty()
   @IsString()
   MONGO_USERNAME: string;

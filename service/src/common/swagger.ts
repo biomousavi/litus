@@ -1,8 +1,8 @@
 import { DocumentBuilder } from "@nestjs/swagger";
 
 const swaggerConfig = new DocumentBuilder()
-  .setTitle("Smart Test AI Swagger")
-  .setDescription("Smart Test AI project APIs")
+  .setTitle("Litus AI Swagger")
+  .setDescription("Litus AI project APIs")
   .addBearerAuth()
   .build();
 
