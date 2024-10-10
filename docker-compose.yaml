@@ -1,0 +1,49 @@
+services:
+  dev:
+    build:
+      context: ./service
+      target: development # specify target stage in Dockerfile
+    env_file: ./.env # load environment variables
+    container_name: litus-service-dev # spacify container name
+    restart: unless-stopped # stop only when docker stopped
+    volumes:
+      - ./service:/usr/src/app # map directory to container for hot reloading
+      - /usr/src/app/node_modules # map node_modules directory
+    depends_on:
+      - mongo
+    ports:
+      - "${SERVICE_PORT}:${SERVICE_PORT}" # map host port to container port
+    command: "npm run start:dev" # command to run in development
+
+  prod:
+    build:
+      context: ./service
+      target: production
+    env_file: ./.env
+    container_name: litus-service-prod
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - ${SERVICE_PORT}:${SERVICE_PORT}
+    # working_dir: /home/node/app
+    command: "npm run start:prod" # command to run in production
+
+  mongo:
+    image: mongo:7-jammy
+    env_file: ./.env
+    restart: always
+    container_name: litus-mongo
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DATEBASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    volumes:
+      - litus_mongodb_data:/data/db
+
+networks:
+  litus_network:
+volumes:
+  litus_mongodb_data:
