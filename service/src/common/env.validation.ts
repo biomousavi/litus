@@ -47,9 +47,7 @@ export function validateEnv(config: Record<string, unknown>) {
     skipMissingProperties: false,
   });
 
-  if (errors.length > 0) {
-    throw new Error(errors.toString());
-  }
+  if (errors.length > 0) throw new Error(errors.toString());
 
   return validatedConfig;
 }
