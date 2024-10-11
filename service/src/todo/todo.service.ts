@@ -1,16 +1,22 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { CreateTodoDto } from "./dto/create-todo.dto";
-import { DeleteTodoDto } from "./dto/delete-todo.dto";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Todo } from "./todo.schema";
 import { Model, Types } from "mongoose";
+import { CreateTodoDto } from "./dto/create-todo.dto";
+import { Todo } from "./todo.schema";
 
 @Injectable()
 export class TodoService {
   constructor(@InjectModel(Todo.name) private todoModel: Model<Todo>) {}
 
+  /**
+   * Creates a new todo item.
+   *
+   * @returns A promise that resolves to the created todo
+   *
+   * @throws {MongooseError}
+   * Throws if there's an error saving to the database
+   */
   async create({ estimated_time, title }: CreateTodoDto): Promise<Todo> {
-    // create new Todo
     const createdTodo = new this.todoModel({
       title,
       estimated_time,
@@ -19,22 +25,43 @@ export class TodoService {
     return createdTodo.save();
   }
 
+  /**
+   * Retrieves all non-deleted todos.
+   *
+   * @returns A promise that resolves to an array of todos
+   *
+   * @remarks
+   * This method uses `.lean()` for better performance as it returns plain JavaScript objects
+   * instead of Mongoose documents.
+   *
+   * @throws {MongooseError}
+   * Throws if there's an error querying the database
+   */
   findAll(): Promise<Todo[]> {
-    // getting all items except deleted items
     return this.todoModel
       .find({ deletion_time: { $exists: false } })
       .lean()
       .exec();
   }
 
+  /**
+   * Soft deletes a todo by setting its deletion_time.
+   *
+   * @param _id - The ObjectId of the todo to delete
+   *
+   * @throws {NotFoundException}
+   * Throws if the todo with the given ID doesn't exist or is already deleted
+   *
+   * @throws {MongooseError}
+   * Throws if there's an error updating the database
+   * ```
+   */
   async remove(_id: Types.ObjectId): Promise<void> {
-    // soft delete the todo
     const result = await this.todoModel.findOneAndUpdate(
       { _id, deletion_time: { $exists: false } },
       { $set: { deletion_time: new Date() } },
     );
 
-    // throw error
     if (!result) {
       throw new NotFoundException(`Todo with id ${_id} not found`);
     }

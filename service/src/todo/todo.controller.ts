@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpCode
 import { TodoService } from "./todo.service";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { DeleteTodoDto } from "./dto/delete-todo.dto";
+import { ParseObjectIdPipe } from "./pipe/parse-object-id.pipe";
+import { Types } from "mongoose";
 
 @Controller("/todo")
 export class TodoController {
@@ -18,13 +20,9 @@ export class TodoController {
     return this.todoService.findAll();
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateTodoDto: DeleteTodoDto) {
-    return this.todoService.update(+id, updateTodoDto);
-  }
-
   @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.todoService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    return this.todoService.remove(id);
   }
 }
