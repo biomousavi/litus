@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { UpdateTodoDto } from "./dto/update-todo.dto";
 import { InjectModel } from "@nestjs/mongoose";
@@ -10,14 +10,18 @@ export class TodoService {
   constructor(@InjectModel(Todo.name) private todoModel: Model<Todo>) {}
 
   async create({ estimated_time, title }: CreateTodoDto): Promise<Todo> {
-    // create new Todo
-    const createdTodo = new this.todoModel({
-      title,
-      estimated_time,
-      creation_time: new Date(),
-    });
-
-    return createdTodo.save();
+    // catching unexpected error and throwing an expected error
+    try {
+      // create new Todo
+      const createdTodo = new this.todoModel({
+        title,
+        estimated_time,
+        creation_time: new Date(),
+      });
+      return createdTodo.save();
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   findAll() {
