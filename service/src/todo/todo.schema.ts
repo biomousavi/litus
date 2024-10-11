@@ -1,7 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
+
+export type TodoDocument = HydratedDocument<Todo>;
 
 @Schema({ collection: "todos", timestamps: false, versionKey: false })
-export class User {
+export class Todo {
   @Prop({ required: true })
   title: string;
 
@@ -15,4 +18,4 @@ export class User {
   creation_time: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(Todo);
