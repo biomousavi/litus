@@ -11,6 +11,7 @@ export class Todo {
   @Prop({ required: true })
   estimated_time: number;
 
+  // soft deletion
   @Prop({ required: false })
   deletion_time?: Date;
 
