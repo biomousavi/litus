@@ -17,12 +17,11 @@ export class TodoService {
    * Throws if there's an error saving to the database
    */
   async create({ estimated_time, title }: CreateTodoDto): Promise<Todo> {
-    const createdTodo = new this.todoModel({
+    return await this.todoModel.create({
       title,
       estimated_time,
       creation_time: new Date(),
     });
-    return createdTodo.save();
   }
 
   /**

@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpCode } from "@nestjs/common";
 import { TodoService } from "./todo.service";
 import { CreateTodoDto } from "./dto/create-todo.dto";
-import { DeleteTodoDto } from "./dto/delete-todo.dto";
 import { ParseObjectIdPipe } from "./pipe/parse-object-id.pipe";
 import { Types } from "mongoose";
 

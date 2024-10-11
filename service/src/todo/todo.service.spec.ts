@@ -1,8 +1,8 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { TodoService } from "./todo.service";
 import { getModelToken } from "@nestjs/mongoose";
-import { Model, Types } from "mongoose";
 import { Todo } from "./todo.schema";
+import { Model, Types } from "mongoose";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { NotFoundException } from "@nestjs/common";
 
@@ -11,9 +11,9 @@ describe("TodoService", () => {
   let model: Model<Todo>;
 
   const mockTodoModel = {
-    new: jest.fn(),
-    find: jest.fn(),
+    create: jest.fn(),
     findOneAndUpdate: jest.fn(),
+    find: jest.fn(),
     save: jest.fn(),
   };
 
@@ -38,69 +38,57 @@ describe("TodoService", () => {
 
   describe("create", () => {
     it("should create a todo successfully", async () => {
-      const createTodoDto: CreateTodoDto = {
+      const createTodoDto = {
         title: "Test Todo",
-        estimated_time: 30,
+        estimated_time: 60,
       };
 
-      const expectedTodo = {
-        _id: new Types.ObjectId(),
+      const mockCreatedTodo = {
+        _id: "mockId",
         ...createTodoDto,
-        creation_time: expect.any(Date),
+        creation_time: new Date(),
       };
 
-      const saveSpy = jest.spyOn(mockTodoModel, "save").mockResolvedValue(expectedTodo);
-
-      mockTodoModel.new.mockReturnValue({
-        ...expectedTodo,
-        save: saveSpy,
-      });
+      mockTodoModel.create.mockResolvedValue(mockCreatedTodo);
 
       const result = await service.create(createTodoDto);
 
-      expect(result).toEqual(expectedTodo);
-      expect(mockTodoModel.new).toHaveBeenCalledWith({
-        ...createTodoDto,
+      expect(result).toEqual(mockCreatedTodo);
+      expect(mockTodoModel.create).toHaveBeenCalledWith({
+        title: createTodoDto.title,
+        estimated_time: createTodoDto.estimated_time,
         creation_time: expect.any(Date),
       });
-      expect(saveSpy).toHaveBeenCalled();
     });
   });
 
   describe("findAll", () => {
     it("should return all non-deleted todos", async () => {
-      const expectedTodos = [
-        {
-          _id: new Types.ObjectId(),
-          title: "Test Todo 1",
-          estimated_time: 30,
-          creation_time: new Date(),
-        },
+      const mockTodos = [
+        { title: "Todo 1", estimated_time: 30 },
+        { title: "Todo 2", estimated_time: 60 },
       ];
 
-      const findQuery = {
+      const mockQuery = {
         lean: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue(expectedTodos),
+        exec: jest.fn().mockResolvedValue(mockTodos),
       };
 
-      mockTodoModel.find.mockReturnValue(findQuery);
+      jest.spyOn(model, "find").mockReturnValue(mockQuery as any);
 
       const result = await service.findAll();
 
-      expect(result).toEqual(expectedTodos);
-      expect(mockTodoModel.find).toHaveBeenCalledWith({
-        deletion_time: { $exists: false },
-      });
+      expect(result).toEqual(mockTodos);
+      expect(model.find).toHaveBeenCalledWith({ deletion_time: { $exists: false } });
     });
   });
 
   describe("remove", () => {
-    it("should soft delete a todo successfully", async () => {
+    it("should soft delete an existing todo", async () => {
       const todoId = new Types.ObjectId();
       const mockTodo = {
         _id: todoId,
         title: "Test Todo",
-        estimated_time: 30,
       };
 
       mockTodoModel.findOneAndUpdate.mockResolvedValue(mockTodo);
@@ -113,7 +101,7 @@ describe("TodoService", () => {
       );
     });
 
-    it("should throw NotFoundException when todo not found", async () => {
+    it("should throw NotFoundException when todo does not exist", async () => {
       const todoId = new Types.ObjectId();
       mockTodoModel.findOneAndUpdate.mockResolvedValue(null);
 
