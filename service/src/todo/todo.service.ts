@@ -24,8 +24,12 @@ export class TodoService {
     }
   }
 
-  findAll() {
-    return `This action returns all todo`;
+  findAll(): Promise<Todo[]> {
+    // getting all items except deleted items
+    return this.todoModel
+      .find({ deletion_time: { $exists: false } })
+      .lean()
+      .exec();
   }
 
   findOne(id: number) {
