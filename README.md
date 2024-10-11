@@ -1,5 +1,11 @@
 # Full Stack Interview
 
+#### Todo for TODO app
+- Replace dummy Dockerfile with [docker multi environment](https://github.com/vercel/next.js/tree/canary/examples/with-docker-multi-env)
+- Add pino logger to Nest.js app
+- Migrate to Nx Monorepo
+
+
 ## Description
 
 This project is a simple TODO application. This web app is very simple and consists of a single main entity, *todos*, whose schema is as follows:
