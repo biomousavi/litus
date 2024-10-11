@@ -1,11 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateTodoDto } from "./dto/create-todo.dto";
+import { UpdateTodoDto } from "./dto/update-todo.dto";
+import { InjectModel } from "@nestjs/mongoose";
+import { Todo } from "./todo.schema";
+import { Model } from "mongoose";
 
 @Injectable()
 export class TodoService {
-  create(createTodoDto: CreateTodoDto) {
-    return 'This action adds a new todo';
+  constructor(@InjectModel(Todo.name) private todoModel: Model<Todo>) {}
+
+  async create({ estimated_time, title }: CreateTodoDto): Promise<Todo> {
+    // create new Todo
+    const createdTodo = new this.todoModel({
+      title,
+      estimated_time,
+      creation_time: new Date(),
+    });
+
+    return createdTodo.save();
   }
 
   findAll() {

@@ -19,4 +19,4 @@ export class Todo {
   creation_time: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(Todo);
+export const TodoSchema = SchemaFactory.createForClass(Todo);
