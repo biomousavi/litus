@@ -1,10 +1,10 @@
 services:
-  dev:
+  service:
     build:
       context: ./service
       target: development # specify target stage in Dockerfile
     env_file: ./.env # load environment variables
-    container_name: litus-service-dev # spacify container name
+    container_name: litus-service # spacify container name
     restart: unless-stopped # stop only when docker stopped
     volumes:
       - ./service:/app # map directory to container for hot reloading
@@ -15,19 +15,23 @@ services:
       - "${SERVICE_PORT}:${SERVICE_PORT}" # map host port to container port
     command: "npm run start:dev" # command to run in development
 
-  prod:
+  dashboard:
     build:
-      context: ./service
-      target: production
-    env_file: ./.env
-    container_name: litus-service-prod
-    restart: unless-stopped
+      context: ./dashboard
+      target: development # specify target stage in Dockerfile
+    container_name: litus-dashboard
+    env_file: ./.env # load environment variables
+    environment:
+      - WATCHPACK_POLLING=true # to enable hot-reload in next.js
     depends_on:
-      - mongo
+      - service
+    volumes:
+      - ./dashboard:/app
+      - /app/node_modules
+      - /app/.next
     ports:
-      - ${SERVICE_PORT}:${SERVICE_PORT}
-    # working_dir: /home/node/app
-    command: "npm run start:prod" # command to run in production
+      - "${DASHBOARD_PORT}:${DASHBOARD_PORT}" 
+    command: "npm run dev"
 
   mongo:
     image: mongo:7-jammy
