@@ -10,18 +10,13 @@ export class TodoService {
   constructor(@InjectModel(Todo.name) private todoModel: Model<Todo>) {}
 
   async create({ estimated_time, title }: CreateTodoDto): Promise<Todo> {
-    // catching unexpected error and throwing an expected error
-    try {
-      // create new Todo
-      const createdTodo = new this.todoModel({
-        title,
-        estimated_time,
-        creation_time: new Date(),
-      });
-      return createdTodo.save();
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
+    // create new Todo
+    const createdTodo = new this.todoModel({
+      title,
+      estimated_time,
+      creation_time: new Date(),
+    });
+    return createdTodo.save();
   }
 
   findAll(): Promise<Todo[]> {
