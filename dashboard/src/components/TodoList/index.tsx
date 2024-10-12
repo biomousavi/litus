@@ -1,4 +1,3 @@
-import api from "@/lib/api";
 import { TODO } from "@/lib/types";
 import TodoItem from "../TodoItem";
 
