@@ -3,7 +3,7 @@ import getConfig from "next/config";
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 const API_URI = serverRuntimeConfig.URI || publicRuntimeConfig.URI;
 
-type Tag = "GET_TODO" | "GET_ITEMS"; // etc..
+type Tag = "TODO_LIST" | "GET_TODO"; // etc..
 
 interface RequestInit {
   next?: {
