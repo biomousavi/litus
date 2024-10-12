@@ -18,11 +18,11 @@ export default function TodoItem({ todo }: TodoItemProps) {
 
   return (
     <li className="h-28 basis-full w-full shrink-0 max-w-lg font-bold bg-white p-4 border-stone-700 overflow-hidden rounded-2xl border-2 border-l-[27px] flex items-center justify-between">
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 w-full">
         {/* Title */}
         <p className="lg:text-2xl text-base"> {todo.title} </p>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between ">
           <p className="flex items-center gap-2">
             {/* Clock Icon */}
             <span>
