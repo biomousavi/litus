@@ -1,15 +1,7 @@
-export default function Home() {
-  /*
+import TodoList from "@/components/TodoList";
+import api from "@/lib/api";
 
-    TODO: starting from this skeleton, build a dashboard to fullfill the use cases provided. The dashboard should be:
-    - visually appealing (we don't expect anything fancy, but don't use plain text either)
-    - clean and well-organized
-    - easy to use
-
-    Organize your code as you see fit.
-
-  */
-
+export default async function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-100">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -65,6 +57,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <TodoList />
     </main>
   );
 }

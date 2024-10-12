@@ -7,6 +7,7 @@
 - Migrate to Nx Monorepo
 - use tRPC for end-to-end type safety
 - Add health check for MongoDB and Service
+- Add pagination for todo list
 - Replace .env with .env.example
 - Improve Accessibility [mdn](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
 
