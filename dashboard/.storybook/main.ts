@@ -9,6 +9,7 @@ const config: StorybookConfig = {
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
   ],
+  features: { experimentalRSC: true },
   framework: {
     name: "@storybook/nextjs",
     options: {},
