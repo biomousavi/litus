@@ -9,6 +9,7 @@
 - Add health check for MongoDB and Service
 - Add pagination for todo list
 - Add E2E test by using PlayWright
+- Add `AbortController` for client side components on unmounting.
 - Replace .env with .env.local
 - Improve Accessibility [mdn](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
 
