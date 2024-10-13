@@ -8,7 +8,7 @@ services:
     restart: unless-stopped # stop only when docker stopped
     volumes:
       - ./service:/app # map directory to container for hot reloading
-      - /usr/src/app/node_modules # map node_modules directory
+      - /app/node_modules
     depends_on:
       - mongo
     ports:

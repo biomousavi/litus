@@ -18,6 +18,8 @@ export default async function api(
   url: string,
   options?: RequestInit & IRequestInit
 ) {
+  console.log(url, API_URI);
+  
   const newUrl = new URL(url, API_URI);
   return fetch(newUrl, options);
 }
