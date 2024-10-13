@@ -8,8 +8,17 @@
 - use tRPC for end-to-end type safety
 - Add health check for MongoDB and Service
 - Add pagination for todo list
-- Replace .env with .env.example
+- Add E2E test by using PlayWright
+- Replace .env with .env.local
 - Improve Accessibility [mdn](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
+
+
+#### How to Run
+```sh
+docker compose up --build dashboard
+# OR
+docker-compose up --build dashboard
+```
 
 ## Description
 
